@@ -19,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
@@ -107,6 +108,18 @@ public class ECDH {
         KeyFactory keyFactory = KeyFactory.getInstance("ECDH", "SC");
         PublicKey publicKey = keyFactory.generatePublic(spec);
         return publicKey;
+    }
+
+    /**
+     * @param pk
+     * @return Return points of PublicKey in String
+     */
+    public static String publicKeyToPoint(PublicKey pk){
+
+        BigInteger x=new BigInteger(((ECPublicKey) pk).getW().getAffineX().toString(),10);
+        BigInteger y=new BigInteger(((ECPublicKey) pk).getW().getAffineY().toString(),10);
+
+        return x.toString(16) + y.toString(16);
     }
 
 }
