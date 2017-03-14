@@ -77,22 +77,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-//        // RSA ejemplo
-//        PublicKey rsapub = null;
-//        try {
-//            rsapub = ECDH.stringToPublicKey("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCqGKukO1De7zhZj6+H0qtjTkVxwTCpvKe4eCZ0FPqri0cb2JZfXJ/DgYSF6vUpwmJG8wVQZKjeGcjDOL5UlsuusFncCzWBQ7RKNUSesmQRMSGkVb1/3j+skZ6UtW+5u09lHNsj6tQ51s1SPrCBkedbNf0Tp0GbMJDyR4e9T04ZZwIDAQAB");
-//            System.out.println(rsapub.toString() + "\n");
-//
-//            System.out.println("----------------------------------------");
-//            System.out.println(ECDH.publicKeyToString(rsapub));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (InvalidKeySpecException e) {
-//            e.printStackTrace();
-//        }
-
         // ECDH ejemplo
         try {
             PublicKey publicKey1 = ECDH.stringToPublicKey("MDYwEAYHKoZIzj0CAQYFK4EEABwDIgAEruGXPxl2BAaTLAVVL+TjKMIU+VJX1BJgkPONygFh6xQ=");
@@ -114,8 +98,10 @@ public class MainActivity extends AppCompatActivity {
             PublicKey aa = ECDH.pointToPublicKey("aee1973f19760406932c05552fe4e328", "c214f95257d4126090f38dca0161eb14");
             System.out.println(aa);
             System.out.println("ESTA -------------> " + ECDH.publicKeyToString(aa));
+            System.out.println();
+            System.out.println(ECDH.publicKeyToString(publicKey1));
 
-
+//            System.out.println(">>>>>>  " + ECDH.publicKeyToPoint(publicKey1));
 
 
         } catch (UnsupportedEncodingException e) {
@@ -131,58 +117,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-//        System.out.println("Pública 1:");
-//        System.out.println(ECDH.publicKeyToString(keyPair.getPublic()));
-//        System.out.println("Privada 1");
-//        System.out.println(ECDH.privateKeyToString(keyPair.getPrivate()));
-//
-//        System.out.println("------------------------------------------------------------------");
-//
-//        System.out.println("Pública 2:");
-//        System.out.println(ECDH.publicKeyToString(keyPair2.getPublic()));
-//        System.out.println("Privada 2");
-//        System.out.println(ECDH.privateKeyToString(keyPair2.getPrivate()));
-//
-//        System.out.println("------------------------------------------------------------------");
-//
-//        try {
-//            System.out.println(ECDH.generateAgreedKey(keyPair.getPrivate(), keyPair2.getPublic()));
-//            System.out.println(ECDH.generateAgreedKey(keyPair2.getPrivate(), keyPair.getPublic()));
-//        } catch (NoSuchProviderException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (InvalidKeyException e) {
-//            e.printStackTrace();
-//        }
-
-//        PublicKey ecdhpub = null;
-//        String exampleKey = "MDYwEAYHKoZIzj0CAQYFK4EEABwDIgAEGpcDz1a3g5u9ch61VOXNsSiU0jdiJtdgwhpembGdAUw=";
-//        System.out.println(exampleKey);
-//
-//        try {
-//            ecdhpub = ECDH.stringToPublicKey(exampleKey);
-//            System.out.println(ecdhpub);
-//            System.out.println(ECDH.publicKeyToString(ecdhpub));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (InvalidKeySpecException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchProviderException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            System.out.println("ECDH:");
-//            System.out.println(ECDH.generateAgreedKey(keyPair.getPrivate(), ecdhpub));
-//        } catch (NoSuchProviderException e) {
-//            e.printStackTrace();
-//        } catch (NoSuchAlgorithmException e) {
-//            e.printStackTrace();
-//        } catch (InvalidKeyException e) {
-//            e.printStackTrace();
-//        }
     }
 }
