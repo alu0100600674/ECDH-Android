@@ -111,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(publicKey1);
 
 
-            ECDH.pointToPublicKey("aee1973f19760406932c05552fe4e328", "c214f95257d4126090f38dca0161eb14");
+            PublicKey aa = ECDH.pointToPublicKey("aee1973f19760406932c05552fe4e328", "c214f95257d4126090f38dca0161eb14");
+            System.out.println(aa);
+            System.out.println("ESTA -------------> " + ECDH.publicKeyToString(aa));
 
 
 

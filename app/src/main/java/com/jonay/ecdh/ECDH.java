@@ -2,8 +2,11 @@ package com.jonay.ecdh;
 
 import android.util.Base64;
 
+import org.spongycastle.asn1.sec.SECNamedCurves;
+import org.spongycastle.asn1.x9.X9ECParameters;
 import org.spongycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.spongycastle.math.ec.ECCurve;
+import org.spongycastle.util.encoders.Hex;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -95,16 +98,15 @@ public class ECDH {
     }
 
     public static PublicKey pointToPublicKey(String x, String y) throws InvalidKeySpecException, NoSuchProviderException, NoSuchAlgorithmException {
+        X9ECParameters ecp = SECNamedCurves.getByName("secp128r1");
 
-//        ECParameterSpec ecParameters = new ECParameterSpec();
-        ECNamedCurveParameterSpec param = null;
+        org.spongycastle.jce.spec.ECParameterSpec ecparam = new org.spongycastle.jce.spec.ECParameterSpec(ecp.getCurve(), ecp.getG(), ecp.getN(), ecp.getH());
+        org.spongycastle.math.ec.ECPoint ecPoint = ecp.getCurve().createPoint(new BigInteger(x, 16), new BigInteger(y, 16));
+        org.spongycastle.jce.spec.ECPublicKeySpec spec = new org.spongycastle.jce.spec.ECPublicKeySpec(ecPoint, ecparam);
 
-        ECPoint ecPoint = new ECPoint(new BigInteger(x, 16), new BigInteger(y, 16));
-//        ECPublicKeySpec spec = new ECPublicKeySpec(ecPoint, null);
-//        KeyFactory keyFactory = KeyFactory.getInstance("ECDH", "SC");
-//        PublicKey publicKey = keyFactory.generatePublic(spec);
-//        return publicKey;
-        return null;
+        KeyFactory keyFactory = KeyFactory.getInstance("ECDH", "SC");
+        PublicKey publicKey = keyFactory.generatePublic(spec);
+        return publicKey;
     }
 
 }
