@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ECDH</string>
+
+    <string name="regenerate">Regenerar claves</string>
+
+    <string name="publickey">Clave pública:</string>
+    <string name="privatekey">Clave privada:</string>
+    <string name="ecdh">ECDH:</string>
+
+    <string name="IPdestino">IP destino:</string>
+    <string name="IPintr">Introduce la IP destino</string>
+    <string name="EstablecerCon">Establecer conexión</string>
+</resources>
