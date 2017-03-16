@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 
 import org.spongycastle.bcpg.ECDHPublicBCPGKey;
 
@@ -26,96 +30,69 @@ public class MainActivity extends AppCompatActivity {
         Security.insertProviderAt(new org.spongycastle.jce.provider.BouncyCastleProvider(), 1);
     }
 
-    KeyPair keyPair;
-    KeyPair keyPair2;
+    GlobalClass globalData;
 
     TextView text_publicKey;
     TextView text_privateKey;
+    Button btn_regenerate;
+    Button btn_connect;
+    EditText text_ip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Generar par de claves
+        globalData = (GlobalClass) getApplicationContext();
+        globalData.setContext(getApplicationContext());
         try {
-            keyPair = ECDH.generateKeyPair();
-            keyPair2 = ECDH.generateKeyPair();
-//            com1 = ECDH.generateAgreedKey(keys1.getPrivate(), keys2.getPublic());
-        } catch (NoSuchProviderException e) {
+            globalData.init();
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
+        } catch (NoSuchProviderException e) {
             e.printStackTrace();
         }
 
         // Mostrar par de claves
         text_publicKey = (TextView) findViewById(R.id.public_key);
         text_privateKey = (TextView) findViewById(R.id.private_key);
-        text_publicKey.setText(keyPair.getPublic().toString());
-        text_privateKey.setText(keyPair.getPrivate().toString());
+        text_publicKey.setText(globalData.getPublicKey().toString());
+        text_privateKey.setText(globalData.getPrivateKey().toString());
 
         // Botón regenerar claves
-        Button btn_regenerate = (Button) findViewById(R.id.btn_regenerate);
+        btn_regenerate = (Button) findViewById(R.id.btn_regenerate);
         btn_regenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    keyPair = ECDH.generateKeyPair();
-                } catch (NoSuchProviderException e) {
-                    e.printStackTrace();
-                } catch (NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                } catch (InvalidAlgorithmParameterException e) {
-                    e.printStackTrace();
+                    globalData.generateKeys();
+                } catch (InvalidAlgorithmParameterException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchAlgorithmException e1) {
+                    e1.printStackTrace();
+                } catch (NoSuchProviderException e1) {
+                    e1.printStackTrace();
                 }
 
-                text_publicKey.setText(keyPair.getPublic().toString());
-                text_privateKey.setText(keyPair.getPrivate().toString());
+                text_publicKey.setText(globalData.getPublicKey().toString());
+                text_privateKey.setText(globalData.getPrivateKey().toString());
             }
         });
 
+        text_ip = (EditText) findViewById(R.id.ip_address);
+        btn_connect = (Button) findViewById(R.id.btn_connect);
+        btn_connect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "http://" + text_ip.getText().toString() + ":3000/test";
+                KeysExchange.publicKeyExchange(globalData.getRequestQueue(), url, ECDH.publicKeyToPoint(globalData.getPublicKey()), globalData.getApplicationContext());
+            }
+        });
 
-        // ECDH ejemplo
-        try {
-            PublicKey publicKey1 = ECDH.stringToPublicKey("MDYwEAYHKoZIzj0CAQYFK4EEABwDIgAEruGXPxl2BAaTLAVVL+TjKMIU+VJX1BJgkPONygFh6xQ=");
-            System.out.println(publicKey1);
-            PrivateKey privateKey1 = ECDH.stringToPrivateKey("MF0CAQAwEAYHKoZIzj0CAQYFK4EEABwERjBEAgEBBBCc6SrqdL/jqbzywFvGdqQjoAcGBSuBBAAcoSQDIgAEruGXPxl2BAaTLAVVL+TjKMIU+VJX1BJgkPONygFh6xQ=");
-            System.out.println(privateKey1);
-            PublicKey publicKey2 = ECDH.stringToPublicKey("MDYwEAYHKoZIzj0CAQYFK4EEABwDIgAExDFaavY8hlP1siLq+U4JVp/GbquU14g4znKBX48vmfo=");
-            System.out.println(publicKey2);
-            PrivateKey privateKey2 = ECDH.stringToPrivateKey("MF0CAQAwEAYHKoZIzj0CAQYFK4EEABwERjBEAgEBBBBfiVJRH6Ay2uJNw9GYSJWpoAcGBSuBBAAcoSQDIgAExDFaavY8hlP1siLq+U4JVp/GbquU14g4znKBX48vmfo=");
-            System.out.println(privateKey2);
-
-            System.out.println(ECDH.generateAgreedKey(privateKey1, publicKey2));
-            System.out.println(ECDH.generateAgreedKey(privateKey2, publicKey1));
-
-
-            System.out.println(publicKey1);
-
-
-            PublicKey aa = ECDH.pointToPublicKey("aee1973f19760406932c05552fe4e328", "c214f95257d4126090f38dca0161eb14");
-            System.out.println(aa);
-            System.out.println("ESTA -------------> " + ECDH.publicKeyToString(aa));
-            System.out.println();
-            System.out.println(ECDH.publicKeyToString(publicKey1));
-
-//            System.out.println(">>>>>>  " + ECDH.publicKeyToPoint(publicKey1));
-
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        }
-
+//        String url = "http://10.209.2.83:3000/test";
+//        System.out.println("SERVER KEY ---->>> " + KeysExchange.publicKeyExchange(queue, url, ECDH.publicKeyToPoint(publicKey1)));
 
     }
 }
