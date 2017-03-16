@@ -2,6 +2,7 @@ package com.jonay.ecdh;
 
 import android.app.Application;
 import android.content.Context;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -27,6 +28,8 @@ public class GlobalClass extends Application {
     private String agreedKey;
 
     RequestQueue queue;
+
+    private TextView textViewECDH;
 
     public GlobalClass() {}
 
@@ -71,6 +74,14 @@ public class GlobalClass extends Application {
 
     public RequestQueue getRequestQueue(){
         return queue;
+    }
+
+    public TextView getTextViewECDH(){
+        return textViewECDH;
+    }
+
+    public void setTextViewECDH(TextView textView){
+        textViewECDH = textView;
     }
 
 }

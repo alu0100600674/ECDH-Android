@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView text_publicKey;
     TextView text_privateKey;
+    TextView text_ecdh;
     Button btn_regenerate;
     Button btn_connect;
     EditText text_ip;
@@ -56,10 +57,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Mostrar par de claves
+        text_ecdh = (TextView) findViewById(R.id.ecdh);
+        globalData.setTextViewECDH(text_ecdh);
+
         text_publicKey = (TextView) findViewById(R.id.public_key);
         text_privateKey = (TextView) findViewById(R.id.private_key);
-        text_publicKey.setText(globalData.getPublicKey().toString());
-        text_privateKey.setText(globalData.getPrivateKey().toString());
+        text_publicKey.setText(ECDH.publicKeyToString(globalData.getPublicKey()));
+        text_privateKey.setText(ECDH.privateKeyToString(globalData.getPrivateKey()));
 
         // Botón regenerar claves
         btn_regenerate = (Button) findViewById(R.id.btn_regenerate);
@@ -76,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     e1.printStackTrace();
                 }
 
-                text_publicKey.setText(globalData.getPublicKey().toString());
-                text_privateKey.setText(globalData.getPrivateKey().toString());
+                text_publicKey.setText(ECDH.publicKeyToString(globalData.getPublicKey()));
+                text_privateKey.setText(ECDH.privateKeyToString(globalData.getPrivateKey()));
             }
         });
 

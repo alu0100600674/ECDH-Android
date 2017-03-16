@@ -46,6 +46,8 @@ public class KeysExchange {
                     //Para probar
                     globalData.setAgreedKey(ECDH.generateAgreedKey(globalData.getPrivateKey(), ECDH.stringToPublicKey(serverKey)));
                     System.out.println("-----> " + globalData.getAgreedKey());
+                    globalData.getTextViewECDH().setText(globalData.getAgreedKey());
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
