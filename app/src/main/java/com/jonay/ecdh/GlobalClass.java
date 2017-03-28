@@ -2,6 +2,7 @@ package com.jonay.ecdh;
 
 import android.app.Application;
 import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -21,6 +22,8 @@ import java.security.PublicKey;
 public class GlobalClass extends Application {
 
     private Context context;
+
+    private String appId;
 
     private PrivateKey privateKey;
     private PublicKey publicKey;
@@ -82,6 +85,14 @@ public class GlobalClass extends Application {
 
     public void setTextViewECDH(TextView textView){
         textViewECDH = textView;
+    }
+
+    public String getAppId(){
+        return appId;
+    }
+
+    public void setAppId(String id){
+        appId = id;
     }
 
 }

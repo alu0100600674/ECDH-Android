@@ -10,4 +10,8 @@
     <string name="IPdestino">IP destino:</string>
     <string name="IPintr">Introduce la IP destino</string>
     <string name="EstablecerCon">Establecer conexión</string>
+
+    <string name="msg">Mensaje:</string>
+    <string name="send">Enviar</string>
+    <string name="Msgintr">Introduce el mensaje</string>
 </resources>

@@ -19,6 +19,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 
@@ -28,10 +29,11 @@ import java.util.HashMap;
 
 public class KeysExchange {
 
-    public static void publicKeyExchange(RequestQueue queue, String url, String publicKey, Context ctx){
+    public static void publicKeyExchange(RequestQueue queue, String url, String publicKey, Context ctx, String appid){
         final Context ctx2 = ctx;
 
         HashMap<String, String> params = new HashMap<>();
+        params.put("appid", appid);
         params.put("publickey", publicKey);
 
         // Request
@@ -40,11 +42,22 @@ public class KeysExchange {
             public void onResponse(JSONObject response) {
                 try {
                     String serverKey = response.get("serverkey").toString();
-                    System.out.println(serverKey);
+//                    System.out.println(serverKey);
+                    Log.i("KeysExchange", serverKey);
                     GlobalClass globalData = (GlobalClass) ctx2;
 
                     //Para probar
-                    globalData.setAgreedKey(ECDH.generateAgreedKey(globalData.getPrivateKey(), ECDH.stringToPublicKey(serverKey)));
+//                    globalData.setAgreedKey(ECDH.generateAgreedKey(globalData.getPrivateKey(), ECDH.stringToPublicKey(serverKey))); // Base 64
+
+                    // En forma de puntos
+//                    PublicKey server = ECDH.pointToPublicKey(serverKey.substring(0, serverKey.length() / 2), serverKey.substring(serverKey.length() / 2));
+//                    Log.i("KeysExchange", server.toString());
+                    globalData.setAgreedKey(ECDH.generateAgreedKey(globalData.getPrivateKey(), ECDH.pointToPublicKey(serverKey.substring(0, serverKey.length() / 2), serverKey.substring(serverKey.length() / 2))));
+//                    System.out.println(serverKey.length());
+//                    serverKey.substring(0, serverKey.length() - 1);
+//                    serverKey.substring(serverKey.length());
+//                    globalData.setAgreedKey(ECDH.generateAgreedKey(globalData.getPrivateKey(), server));
+
                     System.out.println("-----> " + globalData.getAgreedKey());
                     globalData.getTextViewECDH().setText(globalData.getAgreedKey());
 
@@ -53,13 +66,11 @@ public class KeysExchange {
                     e.printStackTrace();
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
-                } catch (InvalidKeyException e) {
+                } catch (NoSuchProviderException e) {
                     e.printStackTrace();
                 } catch (InvalidKeySpecException e) {
                     e.printStackTrace();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                } catch (NoSuchProviderException e) {
+                } catch (InvalidKeyException e) {
                     e.printStackTrace();
                 }
 

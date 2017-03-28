@@ -1,8 +1,11 @@
 package com.jonay.ecdh;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
     Button btn_connect;
     EditText text_ip;
 
+    EditText text_msg;
+    Button btn_sendmsg;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
         globalData = (GlobalClass) getApplicationContext();
         globalData.setContext(getApplicationContext());
+
+        // Set device ID
+        TelephonyManager telephonyManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+        globalData.setAppId(telephonyManager.getDeviceId());
+
         try {
             globalData.init();
         } catch (InvalidAlgorithmParameterException e) {
@@ -91,12 +102,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String url = "http://" + text_ip.getText().toString() + ":3000/test";
-                KeysExchange.publicKeyExchange(globalData.getRequestQueue(), url, ECDH.publicKeyToPoint(globalData.getPublicKey()), globalData.getApplicationContext());
+                KeysExchange.publicKeyExchange(globalData.getRequestQueue(), url, ECDH.publicKeyToPoint(globalData.getPublicKey()), globalData.getApplicationContext(), globalData.getAppId());
             }
         });
 
 //        String url = "http://10.209.2.83:3000/test";
 //        System.out.println("SERVER KEY ---->>> " + KeysExchange.publicKeyExchange(queue, url, ECDH.publicKeyToPoint(publicKey1)));
+
+        text_msg = (EditText) findViewById(R.id.msg);
+        btn_sendmsg = (Button) findViewById(R.id.btn_sendmsg);
+        btn_sendmsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String cif = AES.cifrar(text_msg.getText().toString(), globalData.getAgreedKey());
+                String url = "http://" + text_ip.getText().toString() + ":3000/msg";
+//                url = "http://10.209.2.125:3000/msg";
+                MessagesExchange.sendTestMessage(globalData.getRequestQueue(), url, cif + "\n", globalData.getApplicationContext(), globalData.getAppId());
+
+//                String des = AES.descifrar(cif, globalData.getAgreedKey());
+//                Log.i("AES", des);
+            }
+        });
 
     }
 }

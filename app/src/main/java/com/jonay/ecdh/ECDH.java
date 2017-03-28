@@ -53,7 +53,7 @@ public class ECDH {
         keyAgreement.doPhase(publicKey, true);
 
         byte[] sharedKeyBytes = keyAgreement.generateSecret();
-        return Base64.encodeToString(sharedKeyBytes, Base64.DEFAULT);
+        return Base64.encodeToString(sharedKeyBytes, Base64.DEFAULT).replaceAll("\n", "");
     }
 
 //    public static PublicKey stringToPublicKey(String key) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeySpecException {

@@ -74,7 +74,8 @@
             android:hint="@string/IPintr"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ip_title"/>
+            android:layout_below="@+id/ip_title"
+            android:text="10.209.2.125"/>
 
         <Button
             android:id="@+id/btn_connect"
@@ -82,5 +83,27 @@
             android:layout_height="wrap_content"
             android:text="@string/EstablecerCon"
             android:layout_below="@id/ip_address"/>
+
+        <TextView
+            android:id="@+id/msg_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/msg"
+            android:layout_below="@id/btn_connect"/>
+
+        <EditText
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/Msgintr"
+            android:layout_below="@id/msg_title"
+            />
+
+        <Button
+            android:id="@+id/btn_sendmsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:layout_below="@id/msg"/>
     </RelativeLayout>
 </ScrollView>
